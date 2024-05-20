@@ -13,6 +13,7 @@ return [
     'domain_model' => Domain::class,
 
     /**
+     * php artisan make:job SeedTenancyAdmijob
      * The list of domains hosting your central app.
      *
      * Only relevant if you're using the domain or subdomain identification middleware.

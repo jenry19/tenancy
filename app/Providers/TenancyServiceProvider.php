@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Jobs\SeedTenancyAdmijob;
+use App\Jobs\SeedTenantAdminJob;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -29,7 +29,7 @@ class TenancyServiceProvider extends ServiceProvider
                     Jobs\CreateDatabase::class,
                     Jobs\MigrateDatabase::class,
                     // Jobs\SeedDatabase::class,
-                    SeedTenancyAdmijob::class,
+                    SeedTenantAdminJob::class
 
                     // Your own jobs to prepare the tenant.
                     // Provision API keys, create S3 buckets, anything you want!
@@ -122,12 +122,10 @@ class TenancyServiceProvider extends ServiceProvider
 
     protected function mapRoutes()
     {
-        $this->app->booted(function () {
-            if (file_exists(base_path('routes/tenant.php'))) {
-                Route::namespace(static::$controllerNamespace)
-                    ->group(base_path('routes/tenant.php'));
-            }
-        });
+        if (file_exists(base_path('routes/tenant.php'))) {
+            Route::namespace(static::$controllerNamespace)
+                ->group(base_path('routes/tenant.php'));
+        }
     }
 
     protected function makeTenancyMiddlewareHighestPriority()
